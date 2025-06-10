@@ -6,6 +6,8 @@ import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.Window
+import android.view.WindowManager
 import android.widget.EditText
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -19,9 +21,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager2.widget.ViewPager2
 import com.bd.amazingweather.databinding.MainScreenBinding
@@ -31,13 +35,18 @@ import com.bd.amazingweather.viewModel.WeatherViewModel
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: MainScreenBinding
     private lateinit var viewModel: WeatherViewModel
-
-//    private lateinit var pagerAdapter: WeatherPagerAdapter
+    private lateinit var pagerAdapter: WeatherPagerAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        enableEdgeToEdge()
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
+        enableEdgeToEdge()
         binding = DataBindingUtil.setContentView(this, R.layout.main_screen)
+        pagerAdapter = WeatherPagerAdapter(this)
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -45,10 +54,14 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[WeatherViewModel::class.java]
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+        binding.viewPager.adapter = pagerAdapter
 
-//        viewModel.loadWeatherInfo()
-        binding.viewPager.adapter = WeatherPagerAdapter(this)
-
+//        viewModel.cityList.observe(this, Observer { cityList ->
+//            if (cityList != null) {
+//                pagerAdapter.updateCities(cityList)
+//            }
+//        })
+//        viewModel.loadCityInfo()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -66,25 +79,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    private fun showAddCityDialog() {
-//        val builder = AlertDialog.Builder(this)
-//        builder.setTitle("Add New City")
-//
-//        val input = EditText(this)
-//        input.hint = "Enter city name"
-//        builder.setView(input)
-//
-//        builder.setPositiveButton("OK") { dialog, which ->
-//            val newCity = input.text.toString()
-//            if (newCity.isNotEmpty()) {
-//                addCityToList(newCity)
-//            }
-//        }
-//
-//        builder.setNegativeButton("Cancel") { dialog, which -> dialog.cancel() }
-//
-//        builder.show()
-//    }
 
     private fun showAddCityDialog() {
         val input = EditText(this).apply {
@@ -93,8 +87,8 @@ class MainActivity : AppCompatActivity() {
             setHintTextColor(ContextCompat.getColor(context, android.R.color.darker_gray))
             background = getRoundedRectDrawable(
                 ContextCompat.getColor(context, android.R.color.white),
-                16f, // 圆角半径 (dp)
-                1f, // 边框宽度 (dp)
+                0f,
+                1f,
                 ContextCompat.getColor(context, R.color.white)
             )
             setTextSize(16f)

@@ -1,6 +1,7 @@
 package com.bd.amazingweather
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +32,7 @@ class WeatherFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        Log.d("ViewPager2", "Selected cityname: $cityName")
         cityName?.let{
             viewModel.loadWeatherInfo3(it)
         }

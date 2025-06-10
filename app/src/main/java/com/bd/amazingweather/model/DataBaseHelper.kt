@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 
 class DataBaseHelper(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -14,6 +15,7 @@ class DataBaseHelper(context: Context) :
         private const val DATABASE_VERSION = 1
 
         // 表名和字段
+        private const val TABLE_CITIES = "cities"
         private const val TABLE_WEATHER_HISTORY = "weather_history"
         private const val COLUMN_ID = "id"
         private const val COLUMN_CITY = "city"
@@ -22,6 +24,7 @@ class DataBaseHelper(context: Context) :
         private const val COLUMN_TEMP_MAX = "tempMax"
         private const val COLUMN_DESCRIPTION = "description"
         private const val COLUMN_TIMESTAMP = "timestamp"
+
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -37,11 +40,52 @@ class DataBaseHelper(context: Context) :
             )
         """.trimIndent()
 
+        val CREATE_CITIES_TABLE = """
+            CREATE TABLE IF NOT EXISTS $TABLE_CITIES (
+                $COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
+                $COLUMN_CITY TEXT NOT NULL
+            )
+        """.trimIndent()
+
+        Log.d("DataBaseHelper", "Before Creating")
         db?.execSQL(CREATE_WEATHER_TABLE)
+        Log.d("DataBaseHelper", "Finish Creating 1")
+        db?.execSQL(CREATE_CITIES_TABLE)
+        Log.d("DataBaseHelper", "Finish Creating 2")
+        arrayOf("Beijing", "Shanghai", "Guangzhou", "Shenzhen").forEach { city ->
+            db?.execSQL("INSERT INTO cities (city) VALUES (?)", arrayOf(city))
+        }
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
 
+    }
+
+    fun addCities(city: String): Long{
+        val db = writableDatabase
+
+        val values = ContentValues().apply {
+            put(COLUMN_CITY, city)
+        }
+
+        return db.insert(TABLE_CITIES, null, values)
+    }
+
+    fun getAllCities(): Cursor{
+        val db = readableDatabase
+        val columns = arrayOf(
+            COLUMN_CITY
+        )
+
+        val cursor = db.query(
+            TABLE_CITIES,
+            columns,
+            null,
+            null,
+            null, null, null
+        )
+
+        return cursor
     }
 
     fun addWeather(wi: WeatherInfo): Long {
