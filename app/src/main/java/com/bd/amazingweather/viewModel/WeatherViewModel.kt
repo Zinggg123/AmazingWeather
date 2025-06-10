@@ -8,7 +8,7 @@ import com.bd.amazingweather.model.WeatherRepository
 import kotlinx.coroutines.launch
 
 class WeatherViewModel: ViewModel() {
-    val _weatherInfo = MutableLiveData<WeatherInfo>()
+    val _weatherInfo = MutableLiveData<WeatherInfo?>()
 
     fun loadWeatherInfo() {
         viewModelScope.launch {
@@ -16,4 +16,19 @@ class WeatherViewModel: ViewModel() {
             _weatherInfo.postValue(info)
         }
     }
+
+    fun loadWeatherInfo2(city: String) {
+        viewModelScope.launch {
+            val info = WeatherRepository.getWeather3(city)
+            _weatherInfo.postValue(info)
+        }
+    }
+
+    fun loadWeatherInfo3(city: String) {
+        viewModelScope.launch {
+            val info = WeatherRepository.getWeather0(city)
+            _weatherInfo.postValue(info)
+        }
+    }
+
 }

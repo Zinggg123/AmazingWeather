@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.viewpager2.widget.ViewPager2
 import com.bd.amazingweather.databinding.MainScreenBinding
 import com.bd.amazingweather.ui.theme.AmazingWeatherTheme
 import com.bd.amazingweather.viewModel.WeatherViewModel
@@ -22,10 +23,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: MainScreenBinding
     private lateinit var viewModel: WeatherViewModel
 
+//    private lateinit var pagerAdapter: WeatherPagerAdapter
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        enableEdgeToEdge()
-
         binding = DataBindingUtil.setContentView(this, R.layout.main_screen)
 
         setSupportActionBar(binding.toolbar)
@@ -35,8 +37,9 @@ class MainActivity : AppCompatActivity() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-        // 加载数据
-        viewModel.loadWeatherInfo()
+//        viewModel.loadWeatherInfo()
+        binding.viewPager.adapter = WeatherPagerAdapter(this)
+
     }
 }
 

@@ -29,56 +29,21 @@
                 android:id="@+id/toolbar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="tian"
+                android:text="@{viewModel._weatherInfo.city}"
                 android:textColor="#FFFFFF"
                 android:textSize="18sp"
                 android:layout_gravity="center" />
 
         </androidx.appcompat.widget.Toolbar>
 
-        <!-- 主温度文本 -->
-        <TextView
-            android:id="@+id/curTemp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:gravity="center"
-            android:textSize="80sp"
-            android:textColor="#949494"
-            android:text="@{viewModel._weatherInfo.curTemp}"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/symbolTextview"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            app:layout_constraintBottom_toBottomOf="@+id/symbolTextview"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            android:layout_marginEnd="4dp"/>
-
-        <!-- 小°C符号 -->
-        <TextView
-            android:id="@+id/symbolTextview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="°C"
-            android:textSize="20sp"
-            android:textColor="#949494"
-            app:layout_constraintTop_toTopOf="@+id/curTemp"
-            app:layout_constraintStart_toEndOf="@+id/curTemp"
-            app:layout_constraintBottom_toBottomOf="@+id/curTemp"
-            app:layout_constraintEnd_toEndOf="parent"/>
-
-        <!-- 温度范围描述 -->
-        <TextView
-            android:id="@+id/tempRange"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_marginHorizontal="24dp"
-            android:layout_marginTop="10dp"
-            android:textSize="20sp"
-            android:textColor="#949494"
-            android:text='@{String.format("%s  %s / %s", viewModel._weatherInfo.description, viewModel._weatherInfo.tempMin, viewModel._weatherInfo.tempMax)}'
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/curTemp" />
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
