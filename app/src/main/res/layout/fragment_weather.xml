@@ -10,13 +10,15 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent">
 
         <!-- 主温度文本 -->
         <TextView
             android:id="@+id/curTemp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
             android:gravity="center"
             android:textSize="80sp"
             android:textColor="#949494"
@@ -33,6 +35,8 @@
             android:id="@+id/symbolTextview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+
             android:text="°C"
             android:textSize="20sp"
             android:textColor="#949494"
@@ -46,6 +50,7 @@
             android:id="@+id/tempRange"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
             android:gravity="center"
             android:layout_marginHorizontal="24dp"
             android:layout_marginTop="10dp"

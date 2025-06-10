@@ -8,7 +8,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 class WeatherPagerAdapter(fragmentActivity: FragmentActivity) :
     FragmentStateAdapter(fragmentActivity) {
 
-    private val cities = listOf("Tianjin", "Beijing", "Shanghai", "Guangzhou")
+    private var cities = mutableListOf("Tianjin", "Beijing", "Shanghai", "Guangzhou")
 
     override fun getItemCount(): Int = cities.size
 
@@ -22,5 +22,10 @@ class WeatherPagerAdapter(fragmentActivity: FragmentActivity) :
 
     fun getCityName(position: Int): String? {
         return if (position in 0 until itemCount) cities[position] else null
+    }
+
+    fun addCity(cityName: String) {
+        cities.add(cityName)
+        notifyDataSetChanged()
     }
 }
